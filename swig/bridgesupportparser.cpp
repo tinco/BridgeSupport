@@ -331,20 +331,30 @@ isDeclUnavailable(const Decl *decl)
 }
 
 static const char *
-locgetpath(SourceManager *sm, SourceLocation sl)
+locgetpath(SourceManager *sm, SourceLocation sl, std::string *buffer)
 {
     const FileEntry *fe = NULL;
-    const char *path;
     sl = sm->getFileLoc(sl);
     FileID fid = sm->getFileID(sl);
-    if(fid == sm->getMainFileID()) return CONTENT;
+    if(fid == sm->getMainFileID()) {
+	return buffer->assign(CONTENT).c_str();
+    }
+
     fe = sm->getFileEntryForID(fid);
-    if(!fe || !(path = fe->getName())) path = "/dev/null";
-    return path;
+    if(!fe) {
+	return buffer->assign("/dev/null").c_str();
+    }
+    std::string fileEntry = std::string(fe->getName());
+    if (fileEntry.length() == 0) {
+	buffer->assign("/dev/null");
+    } else {
+	buffer->assign(fileEntry);
+    }
+    return buffer->c_str();
 }
 
 static const char *
-lookupTypeLocClass(TypeLoc::TypeLocClass tl)
+lookupTypeLocClass(TypeLoc::TypeLocClass tl, std::string *buffer)
 {
     static int inited = 0;
     if(!inited) {
@@ -353,7 +363,8 @@ lookupTypeLocClass(TypeLoc::TypeLocClass tl)
     }
     struct TypeLocClassName key = {tl, NULL};
     struct TypeLocClassName *found = (struct TypeLocClassName *)bsearch(&key, TypeLocClassName, NTypeLocName, sizeof(struct TypeLocClassName), TLNcompar);
-    return found ? found->name : "Unknown";
+    buffer->assign(found ? found->name : "Unknown");
+    return buffer->c_str();
 }
 
 static int
@@ -643,7 +654,8 @@ public:
 
 	    sl = ND->getLocation();
 	    if(!sl.isValid()) continue;
-	    const char *path = locgetpath(&BSP->compiler.getSourceManager(), sl);
+	    std::string buffer;
+	    const char *path = locgetpath(&BSP->compiler.getSourceManager(), sl, &buffer);
 
 	    switch(ND->getKind()) {
 	      case Decl::Enum: {
@@ -732,7 +744,8 @@ public:
 			if(!M) rb_raise(rb_eRuntimeError, "Can't find macro info for %s", name_string.c_str());
 			SourceLocation sl = M->getDefinitionLoc();
 			if(!sl.isValid() || !sl.isFileID()) continue;
-			path = locgetpath(&BSP->compiler.getSourceManager(), sl);
+			std::string buffer;
+			path = locgetpath(&BSP->compiler.getSourceManager(), sl, &buffer);
 #define tokN(n)		(M->getReplacementToken(start + (n)))
 #define spellN(n)	(BSP->compiler.getPreprocessor().getSpelling(tokN(n)))
 #define tokNIs(n,k)	(tokN(n).getKind() == k)
@@ -955,9 +968,10 @@ BridgeSupportParser::addFile(const char *file) {
     if(!fe)
 	rb_raise(rb_eRuntimeError, "addFile: Couldn't lookup file: %s", file);
     char path[PATH_MAX];
-    if(realpath(fe->getName(), path) == NULL) {
+    std::string fileEntry = std::string(fe->getName());
+    if(realpath(fileEntry.c_str(), path) == NULL) {
 	int saveerrno = errno;
-	snprintf(path, sizeof(path), "addFile: realpath: %s", fe->getName());
+	snprintf(path, sizeof(path), "addFile: realpath: %s", fileEntry.c_str());
 	errno = saveerrno;
 	rb_sys_fail(path);
     }
@@ -979,9 +993,10 @@ BridgeSupportParser::inDir(FileID file) {
     const clang::FileEntry *fe = compiler.getSourceManager().getFileEntryForID(file);
     char path[PATH_MAX];
     if(fe) {
-	if(realpath(fe->getName(), path) == NULL) {
+	std::string fileEntry = std::string(fe->getName());
+	if(realpath(fileEntry.c_str(), path) == NULL) {
 	    int saveerrno = errno;
-	    snprintf(path, sizeof(path), "inDir: realpath: %s", fe->getName());
+	    snprintf(path, sizeof(path), "inDir: realpath: %s", fileEntry.c_str());
 	    errno = saveerrno;
 	    rb_sys_fail(path);
 	}
@@ -1544,8 +1559,8 @@ VALUE
 AnObjCMethod::info()
 {
     //std::string type = MD->getResultType().isNull() ? "id" : MD->getResultType().getAsString();
-    std::string menc, retenc;
-    BSP->compiler.getASTContext().getObjCEncodingForMethodDecl(MD, menc);
+    std::string retenc;
+    std::string menc = BSP->compiler.getASTContext().getObjCEncodingForMethodDecl(MD);
     QualType rettype = MD->getReturnType();
     BSP->getObjCEncodingForType(rettype, retenc);
     if(rettype->isFunctionPointerType() || rettype->isBlockPointerType()) {
@@ -1648,8 +1663,9 @@ again:
 	TypeLoc tl = tsi->getTypeLoc();
 	do {
 redo:
+	    std::string buffer;
 	    const char *name = NULL;
-	    const char *type = lookupTypeLocClass(tl.getTypeLocClass());
+	    const char *type = lookupTypeLocClass(tl.getTypeLocClass(), &buffer);
 	    // special cases
 	    switch(tl.getTypeLocClass()) {
 #if 0
