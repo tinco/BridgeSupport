@@ -108,6 +108,7 @@ $(CLANG_DIR_MADE): $(OBJROOT_MADE)
 
 SWIG_DIR_MADE = $(SWIG_DIR)/$(MADEFILE)
 $(SWIG_DIR_MADE): $(OBJROOT_MADE)
+	cd $(SRCROOT)/swig && ruby extconf.rb && cd $(SRCROOT)
 	$(RSYNC) $(SRCROOT)/swig $(OBJROOT)
 	$(TOUCH) $@
 
