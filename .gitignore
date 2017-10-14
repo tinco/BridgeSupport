@@ -5,6 +5,7 @@
 /OBJROOT
 /DSTROOT
 /SYMROOT
+/swig/Makefile
 
 # Xcode #
 #########
