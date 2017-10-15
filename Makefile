@@ -23,7 +23,7 @@ ORDERED_ARCHS = $(filter %64,$(RC_ARCHS)) $(filter-out %64,$(RC_ARCHS))
 RC_CFLAGS = $(foreach arch,$(RC_ARCHS),-arch $(arch)) -pipe
 
 RSYNC = /usr/bin/rsync -rlpt
-RUBY = /usr/bin/ruby
+RUBY = ruby
 
 ifneq ("$(wildcard /usr/local/bin/gcc-4.2)","")
 	CC = gcc-4.2
