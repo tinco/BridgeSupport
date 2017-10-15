@@ -1,4 +1,5 @@
-$:.unshift("./DSTROOT/System/Library/BridgeSupport/ruby-2.0")
+version = RUBY_VERSION.sub(/^(\d+\.\d+)(\..*)?$$/, "\\1")
+$:.unshift("./DSTROOT/System/Library/BridgeSupport/ruby-#{version}")
 require_relative 'gen_bridge_metadata'
 require 'pathname'
 require 'fileutils'
