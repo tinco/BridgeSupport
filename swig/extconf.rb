@@ -1,8 +1,8 @@
 require 'rbconfig'
 require 'mkmf'
 
-CLANGHOME = ENV['CLANGHOME'] || File.expand_path('../OBJROOT/clang-39/darwin-x86_64/ROOT/usr/local/')
-LLVMCONFIG = ["#{CLANGHOME}/bin/llvm-config", '/usr/local/bin/llvm-config'].find(lambda{'llvm-config'}) {|f| File.exists?(f)}
+CLANGHOME = ENV['CLANGHOME']
+LLVMCONFIG = ["#{CLANGHOME}/usr/local/bin/llvm-config", '/usr/local/bin/llvm-config'].find(lambda{'llvm-config'}) {|f| File.exists?(f)}
 $ARCH_FLAG = ARCHFLAGS = (ENV['ARCHFLAGS'].nil? || ENV['ARCHFLAGS'].length == 0) ? '-arch x86_64' : ENV['ARCHFLAGS']
 DEBUGFLAGS = '-g'
 OPTIMIZEFLAGS = ENV['RC_XBS'] == 'YES' ? '-Os' : ''
@@ -35,7 +35,7 @@ extension = 'bridgesupportparser'
     'LLVMOption',
 ].reverse.each {|l| $libs = append_library($libs, l)}
 
-with_cppflags("-mmacosx-version-min=10.9 -Wno-reserved-user-defined-literal -I#{CLANGHOME}/include #{`#{LLVMCONFIG} --cxxflags`}") {true}
+with_cppflags("-mmacosx-version-min=10.9 -Wno-reserved-user-defined-literal -I#{CLANGHOME}/usr/local/include #{`#{LLVMCONFIG} --cxxflags`}") {true}
 with_cflags("#{DEBUGFLAGS} #{OPTIMIZEFLAGS} #{ARCHFLAGS} -mmacosx-version-min=10.9 -DDISABLE_SMART_POINTERS -fno-rtti #{`#{LLVMCONFIG} --cflags`}") {true}
 with_ldflags("#{DEBUGFLAGS} #{OPTIMIZEFLAGS} #{ARCHFLAGS} -mmacosx-version-min=10.9 #{`#{LLVMCONFIG} --ldflags`.gsub(/ *-[DO][^ ]*/, '')}") {true}
 
