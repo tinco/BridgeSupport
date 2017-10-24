@@ -1,8 +1,8 @@
 Index: include/clang/Sema/Sema.h
 ===================================================================
---- include/clang/Sema/Sema.h	(revision 295545)
+--- include/clang/Sema/Sema.h	(revision 316442)
 +++ include/clang/Sema/Sema.h	(working copy)
-@@ -1054,7 +1054,7 @@
+@@ -1157,7 +1157,7 @@
    Sema(Preprocessor &pp, ASTContext &ctxt, ASTConsumer &consumer,
         TranslationUnitKind TUKind = TU_Complete,
         CodeCompleteConsumer *CompletionConsumer = nullptr);
@@ -11,16 +11,16 @@ Index: include/clang/Sema/Sema.h
  
    /// \brief Perform initialization that occurs after the parser has been
    /// initialized but before it parses anything.
-@@ -1163,7 +1163,7 @@
- 
+@@ -1267,7 +1267,7 @@
    void emitAndClearUnusedLocalTypedefWarnings();
  
+   void ActOnStartOfTranslationUnit();
 -  void ActOnEndOfTranslationUnit();
 +  virtual void ActOnEndOfTranslationUnit();
  
    void CheckDelegatingCtorCycles();
  
-@@ -3341,7 +3341,7 @@
+@@ -3598,7 +3598,7 @@
      return FullExprArg(FE.get());
    }
  
