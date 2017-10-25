@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestSwift < MiniTest::Unit::TestCase
+class TestSwift < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("swift.h")
   end

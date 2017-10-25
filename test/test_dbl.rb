@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestFloat < MiniTest::Unit::TestCase
+class TestFloat < MiniTest::Test
 
   def test_DBL_MAX
     @bs = gen_bridge_metadata("dbl.h")

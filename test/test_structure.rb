@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestStructure < MiniTest::Unit::TestCase
+class TestStructure < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("structure.h")
   end

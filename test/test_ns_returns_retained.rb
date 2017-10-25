@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestNSReturnsRetained < MiniTest::Unit::TestCase
+class TestNSReturnsRetained < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("ns_returns_retained.h")
   end

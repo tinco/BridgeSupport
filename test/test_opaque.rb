@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestOpaque < MiniTest::Unit::TestCase
+class TestOpaque < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("opaque.h")
   end

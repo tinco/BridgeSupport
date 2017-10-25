@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestConstant < MiniTest::Unit::TestCase
+class TestConstant < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("constant.h")
   end

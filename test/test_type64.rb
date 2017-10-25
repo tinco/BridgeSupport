@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestType64 < MiniTest::Unit::TestCase
+class TestType64 < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("type64.h")
   end

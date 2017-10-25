@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestCPlusPlus < MiniTest::Unit::TestCase
+class TestCPlusPlus < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("cplusplus.h")
   end
@@ -12,7 +11,7 @@ class TestCPlusPlus < MiniTest::Unit::TestCase
     const = @bs["string_constant"]
 
     assert_equal(const[0]["name"],  "TestStringConstant")
-    assert_equal(const[0]["value"], "foo")    
+    assert_equal(const[0]["value"], "foo")
   end
 
 end

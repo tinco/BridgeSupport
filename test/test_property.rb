@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestProperty < MiniTest::Unit::TestCase
+class TestProperty < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("property.h")
   end

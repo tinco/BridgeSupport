@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestVariadic < MiniTest::Unit::TestCase
+class TestVariadic < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("variadic.h")
   end

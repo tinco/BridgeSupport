@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestEnum < MiniTest::Unit::TestCase
+class TestEnum < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("enum.h")
   end

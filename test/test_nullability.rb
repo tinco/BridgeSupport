@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestNullability < MiniTest::Unit::TestCase
+class TestNullability < MiniTest::Test
   def setup
     @bs = gen_bridge_metadata("nullability.h")
   end

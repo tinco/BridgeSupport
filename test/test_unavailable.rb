@@ -1,8 +1,7 @@
-require "minitest/unit"
 require "minitest/autorun"
 require "./helper"
 
-class TestUnavailable < MiniTest::Unit::TestCase
+class TestUnavailable < MiniTest::Test
 
   def test_osx
     @bs = gen_bridge_metadata("unavailable.h", {:cflags => "-mmacosx-version-min=10.12 -framework Foundation -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"})
