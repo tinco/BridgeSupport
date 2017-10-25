@@ -647,6 +647,7 @@ public:
 
     virtual void HandleTranslationUnit (ASTContext &Ctx) {
 	SourceLocation sl;
+	std::string buffer;
 
 	for (DeclContext::decl_iterator i = Ctx.getTranslationUnitDecl()->decls_begin(), e = Ctx.getTranslationUnitDecl()->decls_end(); i != e; i++) {
 	    const NamedDecl *ND = dyn_cast<NamedDecl>(*i);
@@ -654,7 +655,6 @@ public:
 
 	    sl = ND->getLocation();
 	    if(!sl.isValid()) continue;
-	    std::string buffer;
 	    const char *path = locgetpath(&BSP->compiler.getSourceManager(), sl, &buffer);
 
 	    switch(ND->getKind()) {
@@ -722,6 +722,7 @@ public:
 
 	Parser::DeclGroupPtrTy ADecl;
 	ExprData expr;
+	std::string buffer;
 	const char *path;
 
 	expr.kind = ExprUnknown;
@@ -744,7 +745,6 @@ public:
 			if(!M) rb_raise(rb_eRuntimeError, "Can't find macro info for %s", name_string.c_str());
 			SourceLocation sl = M->getDefinitionLoc();
 			if(!sl.isValid() || !sl.isFileID()) continue;
-			std::string buffer;
 			path = locgetpath(&BSP->compiler.getSourceManager(), sl, &buffer);
 #define tokN(n)		(M->getReplacementToken(start + (n)))
 #define spellN(n)	(BSP->compiler.getPreprocessor().getSpelling(tokN(n)))
@@ -1659,11 +1659,11 @@ ATypedef::walk_types()
 {
     TypeSourceInfo *tsi = TD->getTypeSourceInfo();
     if(tsi) {
+	std::string buffer;
 again:
 	TypeLoc tl = tsi->getTypeLoc();
 	do {
 redo:
-	    std::string buffer;
 	    const char *name = NULL;
 	    const char *type = lookupTypeLocClass(tl.getTypeLocClass(), &buffer);
 	    // special cases
