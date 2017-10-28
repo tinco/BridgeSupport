@@ -241,7 +241,13 @@ module Bridgesupportparser
 	    #puts "Base: #{self.name} attrs=#{attrs.inspect}" #DEBUG
 	    return nil if attrs.nil? || attrs.empty?
 	    e = REXML::Element.new(self.class.element_name)
-	    attrs.each { |k, v| e.attributes[k.to_s] = v }
+	    attrs.each { |k, v|
+		begin
+		    e.attributes[k.to_s] = v
+		rescue
+		    $stderr.puts "Exception in adding attribute #{k.to_s}, #{v}"
+		end
+	    }
 	    e
 	end
 
