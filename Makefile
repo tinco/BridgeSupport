@@ -53,6 +53,9 @@ BS_RUBY := $(BS_LIBS)/ruby-$(shell $(RUBY) -e 'puts RUBY_VERSION.sub(/^(\d+\.\d+
 RUBYLIB = $(BS_RUBY)
 
 LIBSYSTEM_HEADERS = /usr/include/asl.h /usr/include/notify*.h /usr/include/copyfile.h /usr/include/sandbox.h /usr/include/launch.h /usr/include/CommonCrypto/*.h
+ifneq ($(realpath /usr/include/objc/NSObjCRuntime.h),"")
+	LIBSYSTEM_HEADERS += /usr/include/objc/NSObjCRuntime.h
+endif
 
 # For the Apple build system, we split into two separate projects:
 #     BridgeSupport_ext - build extension and save in /usr/local/BridgeSupport
@@ -196,7 +199,7 @@ $(LIBSYSTEM_BRIDGESUPPORT):
 	@/bin/echo -n '*** Started Building .bridgesupport files: ' && date
 	# TODO : generate BridgeSupport files in each system library frameworks
 	# DSTROOT='$(DSTROOT)' RUBYLIB='$(RUBYLIB)' $(RUBY) build.rb
-	RUBYLIB='$(RUBYLIB)' $(RUBY) gen_bridge_metadata.rb -c '-I/usr/include/CommonCrypto' -e $(LIBSYSTEM_EXCEPTION) -o $@ $(LIBSYSTEM_HEADERS)
+	RUBYLIB='$(RUBYLIB)' $(RUBY) gen_bridge_metadata.rb -c '-I/usr/include/CommonCrypto -I/usr/include/objc' -e $(LIBSYSTEM_EXCEPTION) -o $@ $(LIBSYSTEM_HEADERS)
 	$(INSTALL_DIRECTORY) $(SYSTEM_BRIDGESUPPORT)
 	$(LN) -fs `echo $(SYSTEM_BS) | sed 's,[^/]*,..,g'`/BridgeSupport/libSystem.bridgesupport $(SYSTEM_BRIDGESUPPORT)/System.bridgesupport
 	@/bin/echo -n '*** Finished Building .bridgesupport files: ' && date
