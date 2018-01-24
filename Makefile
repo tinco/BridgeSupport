@@ -104,7 +104,6 @@ $(CLANG_DIR_MADE): $(OBJROOT_MADE)
 	# cd $(CLANG_DIR)/projects && git clone https://github.com/llvm-mirror/compiler-rt.git && cd $(CLANG_DIR)/projects/compiler-rt && git checkout -b $(CLANG_BRANCH) origin/$(CLANG_BRANCH)
 	cd $(OBJROOT) && svn co http://llvm.org/svn/llvm-project/llvm/$(CLANG_BRANCH) $(CLANG_VERS)
 	cd $(CLANG_DIR)/tools && svn co http://llvm.org/svn/llvm-project/cfe/$(CLANG_BRANCH) clang
-	cd $(CLANG_DIR)/projects && svn co http://llvm.org/svn/llvm-project/compiler-rt/$(CLANG_BRANCH) compiler-rt
 	cd $(CLANG_DIR)/tools/clang && patch -p0 < $(SRCROOT)/clang.patch
 	cd $(SRCROOT)
 	$(TOUCH) $@
@@ -134,7 +133,7 @@ $(CLANGROOT_MADE): $(CLANG_DIR_MADE)
 	    $(MKDIR) $(CLANG_DIR)/darwin-$$arch && \
 	    (cd $(CLANG_DIR)/darwin-$$arch && \
 	    $(MKDIR) ROOT && \
-	    env MACOSX_DEPLOYMENT_TARGET=10.9 CC="$(CC) -arch $$arch" CXX="$(CXX) -arch $$arch" cmake ../ -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_LIBCXX=YES -DLLVM_BUILD_EXTERNAL_COMPILER_RT=YES -DLLVM_TARGETS_TO_BUILD="X86" && \
+	    env MACOSX_DEPLOYMENT_TARGET=10.9 CC="$(CC) -arch $$arch" CXX="$(CXX) -arch $$arch" cmake ../ -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD="X86" && \
 	    env MACOSX_DEPLOYMENT_TARGET=10.9 CC="$(CC) -arch $$arch" CXX="$(CXX) -arch $$arch" make -j$(shell sysctl -n hw.ncpu) && \
 	    $(MKDIR) $(CLANG_DIR)/darwin-$$arch/ROOT && \
 	    make install DESTDIR=$(CLANG_DIR)/darwin-$$arch/ROOT) || exit 1; \
