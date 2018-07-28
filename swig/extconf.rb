@@ -51,9 +51,9 @@ open("Makefile", "a") do |mf|
 BSP_HEADERS = classes.h #{extension}.h __xattr__.h
 $(OBJS): $(BSP_HEADERS)
 
-#{extension}_wrap.cpp: $(BSP_HEADERS)
-#{extension}_wrap.cpp: #{extension}.i
-	swig -c++ -ruby -o $@ $<
+# #{extension}_wrap.cpp: $(BSP_HEADERS)
+# #{extension}_wrap.cpp: #{extension}.i
+#	swig -c++ -ruby -o $@ $<
 
 #{extension}_wrap.o: #{extension}_wrap.cpp
 	$(CXX) $(INCFLAGS) -DSWIG $(CPPFLAGS) $(CXXFLAGS) -c $<
