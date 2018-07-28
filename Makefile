@@ -92,7 +92,7 @@ $(SYMROOT_MADE): $(OBJROOT_MADE)
 
 # Subdirectories
 CLANG_VERS = clang-60
-CLANG_BRANCH = tags/RELEASE_600/final
+CLANG_BRANCH = tags/RELEASE_601/final
 CLANG_DIR = $(OBJROOT)/$(CLANG_VERS)
 SWIG_DIR = $(OBJROOT)/swig
 
