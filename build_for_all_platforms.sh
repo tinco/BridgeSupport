@@ -12,6 +12,6 @@ rbenv shell 2.0.0-p648
 rm -rf OBJROOT/swig
 make
 
-rbenv shell 2.3.3
+rbenv shell 2.3.7
 rm -rf OBJROOT/swig
 make
