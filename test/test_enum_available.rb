@@ -3,7 +3,7 @@ require "./helper"
 
 class TestEnumAvailable < MiniTest::Test
   def setup
-    @bs = gen_bridge_metadata("enum_available.h", {:cflags => " -isysroot '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk' -miphoneos-version-min=8.4 -D__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__=80400"})
+    @bs = gen_bridge_metadata("enum_available.h", {:cflags => " -isysroot '#{xcode_developer_path}/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk' -miphoneos-version-min=8.4 -D__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__=80400"})
   end
 
   def test_enum_available

@@ -4,7 +4,7 @@ require "./helper"
 class TestUnavailable < MiniTest::Test
 
   def test_osx
-    @bs = gen_bridge_metadata("unavailable.h", {:cflags => "-mmacosx-version-min=10.12 -framework Foundation -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"})
+    @bs = gen_bridge_metadata("unavailable.h", {:cflags => "-mmacosx-version-min=10.12 -framework Foundation -isysroot #{xcode_developer_path}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"})
     assert_equal(@bs["constant"].count,      1)
     assert_equal(@bs["constant"][0]["name"], "TestConstant1")
 
@@ -21,7 +21,7 @@ class TestUnavailable < MiniTest::Test
   end
 
   def test_ios
-    @bs = gen_bridge_metadata("unavailable.h", {:cflags => "-mios-version-min=10.0 -framework Foundation -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"})
+    @bs = gen_bridge_metadata("unavailable.h", {:cflags => "-mios-version-min=10.0 -framework Foundation -isysroot #{xcode_developer_path}/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"})
     assert_equal(@bs["constant"].count,      1)
     assert_equal(@bs["constant"][0]["name"], "TestConstant2")
 
@@ -40,14 +40,14 @@ class TestUnavailable < MiniTest::Test
   end
 
   def test_ios_older_version
-    @bs = gen_bridge_metadata("unavailable.h", {:cflags => "-mios-version-min=7.0 -framework Foundation -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"})
+    @bs = gen_bridge_metadata("unavailable.h", {:cflags => "-mios-version-min=7.0 -framework Foundation -isysroot #{xcode_developer_path}/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk"})
     assert_equal(@bs["constant"].count,      2)
     assert_equal(@bs["constant"][0]["name"], "TestConstant1")
     assert_equal(@bs["constant"][1]["name"], "TestConstant2")
   end
 
   def test_tvos
-    @bs = gen_bridge_metadata("unavailable.h", {:cflags => "-mtvos-version-min=10.0 -framework Foundation -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk"})
+    @bs = gen_bridge_metadata("unavailable.h", {:cflags => "-mtvos-version-min=10.0 -framework Foundation -isysroot #{xcode_developer_path}/Platforms/AppleTVSimulator.platform/Developer/SDKs/AppleTVSimulator.sdk"})
     assert_equal(@bs["constant"].count,      1)
     assert_equal(@bs["constant"][0]["name"], "TestConstant2")
 

@@ -8,3 +8,8 @@ def gen_bridge_metadata(header_file_name, option = {})
 
   XmlSimple.xml_in(open(output_path))
 end
+
+def xcode_developer_path
+  @xcode_developer_path ||= `xcode-select -p`.strip
+  @xcode_developer_path
+end

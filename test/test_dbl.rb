@@ -11,7 +11,7 @@ class TestFloat < MiniTest::Test
   end
 
   def test_DBL_MAX_with_SYSROOT
-    @bs = gen_bridge_metadata("dbl.h", {:cflags => " -isysroot '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk'"})
+    @bs = gen_bridge_metadata("dbl.h", {:cflags => " -isysroot '#{xcode_developer_path}/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk'"})
 
     enum = @bs["enum"]
     assert_equal(enum[0]["name"],  "MY_CGFLOAT_MAX")
