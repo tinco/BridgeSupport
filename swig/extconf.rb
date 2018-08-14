@@ -36,7 +36,7 @@ extension = 'bridgesupportparser'
 ].reverse.each {|l| $libs = append_library($libs, l)}
 
 with_cppflags("#{DEBUGFLAGS} #{OPTIMIZEFLAGS} #{ARCHFLAGS} -mmacosx-version-min=10.9 -Wno-reserved-user-defined-literal -I#{CLANGHOME}/usr/local/include #{`#{LLVMCONFIG} --cxxflags`}") {true}
-with_cflags("#{DEBUGFLAGS} #{OPTIMIZEFLAGS} #{ARCHFLAGS} -mmacosx-version-min=10.9 -DDISABLE_SMART_POINTERS -fno-rtti #{`#{LLVMCONFIG} --cflags`}") {true}
+with_cflags("#{DEBUGFLAGS} #{OPTIMIZEFLAGS} #{ARCHFLAGS} -mmacosx-version-min=10.9 -fno-rtti #{`#{LLVMCONFIG} --cflags`}") {true}
 with_ldflags("#{DEBUGFLAGS} #{OPTIMIZEFLAGS} #{ARCHFLAGS} -mmacosx-version-min=10.9 #{`#{LLVMCONFIG} --ldflags`.gsub(/ *-[DO][^ ]*/, '')}") {true}
 
 $srcs = ["#{extension}.cpp", "#{extension}_wrap.cpp"]
