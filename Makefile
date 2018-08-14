@@ -249,6 +249,9 @@ endif
 
 endif #
 
+build_bridgesupport:
+	DSTROOT='$(DSTROOT)' RUBYLIB='$(RUBYLIB)' $(RUBY) build.rb
+
 update_exceptions:
 	$(RUBY) build.rb --update-exceptions
 
