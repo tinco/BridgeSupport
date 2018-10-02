@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-make && sudo make DESTDIR=/Library/RubyMotion/BridgeSupport3
+make rebuild && sudo make DESTDIR=/Library/RubyMotion/BridgeSupport3
