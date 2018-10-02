@@ -1,0 +1,15 @@
+language: generic
+
+matrix:
+    include:
+        - os: osx
+          sudo: required
+          osx_image: xcode10
+        - os: osx
+          sudo: required
+          osx_image: xcode9.4
+          env: PRE_SDK=true
+
+install: brew install cmake subversion
+
+script: ./travis-run.sh
