@@ -10,7 +10,7 @@ matrix:
           osx_image: xcode9.4
           env: PRE_SDK=true
 
-install: brew install cmake subversion
+install: brew bundle
 
 cache:
   directories:
