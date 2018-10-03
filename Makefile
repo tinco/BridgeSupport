@@ -1,5 +1,5 @@
 ##
-# Makefile for BridgeSupport 
+# Makefile for BridgeSupport
 ##
 ifdef RC_ProjectName
 Project = $(RC_ProjectName)
@@ -265,5 +265,5 @@ rebuild:
 	rm -rf $(DSTROOT_MADE)
 	rm -rf $(SYMROOT_MADE)
 	rm -rf $(SWIG_DIR)
+	rm -f $(SRCROOT)/swig/Makefile
 	make
-

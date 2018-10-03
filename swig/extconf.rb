@@ -45,6 +45,26 @@ $cleanfiles << "#{extension}_wrap.cpp"
 
 create_makefile(extension)
 
+# HACK This next part is a fix because Apple neglected to correctly set the
+# Ruby header dir in the RbConfig for at least MacOS 10.14
+macos_version = `/usr/bin/sw_vers -productVersion`.split(".").map(&:to_i)
+if macos_version[0] > 9 &&
+    (macos_version[0] == 10 && macos_version[1] >= 14) ||
+    macos_version[0] > 10
+  ruby_framework_prefix = RbConfig::CONFIG['prefix']
+  sdk_prefix = "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{macos_version.join(".")}.sdk"
+  ruby_sdk_include = sdk_prefix + ruby_framework_prefix + "/include"
+  ruby_header_dir = "#{ruby_sdk_include}/#{RbConfig::CONFIG["RUBY_VERSION_NAME"]}"
+  if File.exists? ruby_header_dir + "/ruby.h"
+    STDERR.puts "INFO extconf.rb: Using #{ruby_header_dir} for Ruby headers."
+    # HACK I tried configuring this through RbConfig, but failed, mkmf is a mess
+    makefile = File.read("Makefile")
+    File.write("Makefile", makefile.gsub(/topdir = .*$/, "topdir = #{ruby_header_dir}"))
+  else
+    STDERR.puts "WARNING extconf.rb: On MacOS > 9 but found no Ruby.framework in #{sdk_prefix}"
+  end
+end
+
 open("Makefile", "a") do |mf|
     mf.puts <<EOF
 
