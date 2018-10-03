@@ -1,10 +1,17 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    minitest (5.11.3)
+    minitest-fail-fast (0.1.0)
+      minitest (~> 5)
     xml-simple (1.1.5)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  minitest-fail-fast
   xml-simple
+
+BUNDLED WITH
+   1.16.5

@@ -10,7 +10,7 @@ matrix:
           osx_image: xcode9.4
           env: PRE_SDK=true
 
-install: brew bundle
+install: brew bundle && bundle
 
 cache:
   directories:
