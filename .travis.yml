@@ -17,5 +17,6 @@ cache:
     - OBJROOT
     - DSTROOT
     - SYMROOT
+  timeout: 1000
 
 script: ./travis-run.sh
