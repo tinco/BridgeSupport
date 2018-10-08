@@ -23,7 +23,7 @@ ORDERED_ARCHS = $(filter %64,$(RC_ARCHS)) $(filter-out %64,$(RC_ARCHS))
 RC_CFLAGS = $(foreach arch,$(RC_ARCHS),-arch $(arch)) -pipe
 
 RSYNC = /usr/bin/rsync -rlpt
-RUBY = ruby
+RUBY = $(PWD)/ruby_wrapper
 
 ifneq ("$(wildcard /usr/local/bin/gcc-4.2)","")
 	CC = gcc-4.2
@@ -49,7 +49,7 @@ else # !BridgeSupport_ext
 BS_LIBS = $(DSTROOT)/System/Library/BridgeSupport
 endif # !BridgeSupport_ext
 BS_INCLUDE = $(BS_LIBS)/include
-BS_RUBY := $(BS_LIBS)/ruby-$(shell $(RUBY) -e 'puts RUBY_VERSION.sub(/^(\d+\.\d+)(\..*)?$$/, "\\1")')
+BS_RUBY := $(BS_LIBS)/ruby-$(shell $(RUBY) -e 'puts RUBY_VERSION.split(\".\")[0..1].join(\".\")')
 RUBYLIB = $(BS_RUBY)
 
 LIBSYSTEM_HEADERS = /usr/include/asl.h /usr/include/notify*.h /usr/include/copyfile.h /usr/include/sandbox.h /usr/include/launch.h /usr/include/CommonCrypto/*.h
@@ -209,7 +209,9 @@ BRIDGESUPPORT_5 = $(DSTROOT)$(MANDIR)/man5/BridgeSupport.5
 $(BRIDGESUPPORT_5): $(DSTROOT_MADE)
 	$(MKDIR) $(USR_BIN)
 	$(INSTALL_PROGRAM) gen_bridge_metadata.rb $(USR_BIN)/gen_bridge_metadata
+	$(INSTALL_PROGRAM) ruby_wrapper $(USR_BIN)/gen_bridge_metadata_ruby_wrapper
 	$(CHMOD) +x $(USR_BIN)/gen_bridge_metadata
+	$(CHMOD) +x $(USR_BIN)/gen_bridge_metadata_ruby_wrapper
 	$(MKDIR) $(DTDS)
 	$(CP) BridgeSupport.dtd $(DTDS)
 	$(MKDIR) $(DSTROOT)$(MANDIR)/man1
